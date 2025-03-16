@@ -1,0 +1,87 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BF370E66-4F10-4576-80AC-1EFCD7B4082D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{411EBB2F-043C-4B8C-BB1B-304729A20418}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Apprendi", "01 Apprendi", "{975AA4B1-682B-49E6-85EE-0260E072095A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprendi.Domain", "src\01 Apprendi\Apprendi.Domain\Apprendi.Domain.csproj", "{8F3BBFDD-A11A-46E7-9B34-67CE3135E57F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprendi.Infrastructure", "src\01 Apprendi\Apprendi.Infrastructure\Apprendi.Infrastructure.csproj", "{DDFAF707-FC86-47BE-B871-628B9C49B2A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprendi.Application", "src\01 Apprendi\Apprendi.Application\Apprendi.Application.csproj", "{DDF576AB-8435-4874-AC7B-25A6904453F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Backend", "02 Backend", "{CA80127B-4FE7-425A-8EEC-590A1CE7A62C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 FrontEnd", "03 FrontEnd", "{0988F431-A2F3-4FDB-8F6C-06567C77BCDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprendi.Application.Common", "src\03 FrontEnd\Apprendi.Application.Common\Apprendi.Application.Common.csproj", "{652DBEE3-B08A-49A1-935F-84B2B5F402FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprendi.Function", "src\02 Backend\Apprendi.Function\Apprendi.Function.csproj", "{97F04E5B-19B9-419C-8E6F-2795579DA1ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprendi.Web", "src\03 FrontEnd\Apprendi.Web\Apprendi.Web\Apprendi.Web.csproj", "{04714AFA-3357-4CFD-BE7D-3E5E57161CAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprendi.Web.Client", "src\03 FrontEnd\Apprendi.Web\Apprendi.Web.Client\Apprendi.Web.Client.csproj", "{C322604C-3729-458A-8AF7-D46127C249E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apprendi.Application.Common.SourceGenerator", "src\03 FrontEnd\Apprendi.Application.Common.SourceGenerator\Apprendi.Application.Common.SourceGenerator.csproj", "{50C00275-9C27-48D0-8F4D-39BDAE6A3E43}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F3BBFDD-A11A-46E7-9B34-67CE3135E57F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F3BBFDD-A11A-46E7-9B34-67CE3135E57F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F3BBFDD-A11A-46E7-9B34-67CE3135E57F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F3BBFDD-A11A-46E7-9B34-67CE3135E57F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDFAF707-FC86-47BE-B871-628B9C49B2A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDFAF707-FC86-47BE-B871-628B9C49B2A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDFAF707-FC86-47BE-B871-628B9C49B2A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDFAF707-FC86-47BE-B871-628B9C49B2A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDF576AB-8435-4874-AC7B-25A6904453F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDF576AB-8435-4874-AC7B-25A6904453F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDF576AB-8435-4874-AC7B-25A6904453F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDF576AB-8435-4874-AC7B-25A6904453F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{652DBEE3-B08A-49A1-935F-84B2B5F402FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{652DBEE3-B08A-49A1-935F-84B2B5F402FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{652DBEE3-B08A-49A1-935F-84B2B5F402FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{652DBEE3-B08A-49A1-935F-84B2B5F402FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97F04E5B-19B9-419C-8E6F-2795579DA1ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97F04E5B-19B9-419C-8E6F-2795579DA1ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97F04E5B-19B9-419C-8E6F-2795579DA1ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97F04E5B-19B9-419C-8E6F-2795579DA1ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04714AFA-3357-4CFD-BE7D-3E5E57161CAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04714AFA-3357-4CFD-BE7D-3E5E57161CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04714AFA-3357-4CFD-BE7D-3E5E57161CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04714AFA-3357-4CFD-BE7D-3E5E57161CAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C322604C-3729-458A-8AF7-D46127C249E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C322604C-3729-458A-8AF7-D46127C249E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C322604C-3729-458A-8AF7-D46127C249E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C322604C-3729-458A-8AF7-D46127C249E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50C00275-9C27-48D0-8F4D-39BDAE6A3E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50C00275-9C27-48D0-8F4D-39BDAE6A3E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50C00275-9C27-48D0-8F4D-39BDAE6A3E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50C00275-9C27-48D0-8F4D-39BDAE6A3E43}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{975AA4B1-682B-49E6-85EE-0260E072095A} = {BF370E66-4F10-4576-80AC-1EFCD7B4082D}
+		{8F3BBFDD-A11A-46E7-9B34-67CE3135E57F} = {975AA4B1-682B-49E6-85EE-0260E072095A}
+		{DDFAF707-FC86-47BE-B871-628B9C49B2A3} = {975AA4B1-682B-49E6-85EE-0260E072095A}
+		{DDF576AB-8435-4874-AC7B-25A6904453F6} = {975AA4B1-682B-49E6-85EE-0260E072095A}
+		{CA80127B-4FE7-425A-8EEC-590A1CE7A62C} = {BF370E66-4F10-4576-80AC-1EFCD7B4082D}
+		{0988F431-A2F3-4FDB-8F6C-06567C77BCDD} = {BF370E66-4F10-4576-80AC-1EFCD7B4082D}
+		{652DBEE3-B08A-49A1-935F-84B2B5F402FC} = {0988F431-A2F3-4FDB-8F6C-06567C77BCDD}
+		{97F04E5B-19B9-419C-8E6F-2795579DA1ED} = {CA80127B-4FE7-425A-8EEC-590A1CE7A62C}
+		{04714AFA-3357-4CFD-BE7D-3E5E57161CAB} = {0988F431-A2F3-4FDB-8F6C-06567C77BCDD}
+		{C322604C-3729-458A-8AF7-D46127C249E5} = {0988F431-A2F3-4FDB-8F6C-06567C77BCDD}
+		{50C00275-9C27-48D0-8F4D-39BDAE6A3E43} = {0988F431-A2F3-4FDB-8F6C-06567C77BCDD}
+	EndGlobalSection
+EndGlobal

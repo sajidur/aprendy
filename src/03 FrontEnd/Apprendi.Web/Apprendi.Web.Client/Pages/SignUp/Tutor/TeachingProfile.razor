@@ -1,0 +1,217 @@
+﻿@attribute [Authorize]
+
+@using Apprendi.Application.Features.ReferenceData
+@using Apprendi.Application.Features.SignUp
+@using Radzen.Blazor
+@using Radzen;
+
+@page "/signup/tutor/teaching-profile"
+
+<div class="main-container">
+    <EditForm Model="_command">
+        <FluentValidator />
+        <RadzenText Text="Teaching profile" class="first-Page-title" TextStyle="TextStyle.DisplayH5" TextAlign="TextAlign.Center"></RadzenText>
+        <div class="main-title-container">
+            <button id="backBtn" class="left-icon-container" @onclick="OnGoBackClick">
+                <RadzenImage class="left-icon" src="/images/narrow-left.png" alt="left icon" />
+                <p class="back-txt align-self-center">Back</p>
+            </button>
+        </div>
+
+        <div class="main-section4">
+            <RadzenText Text="Teaching Subjects" class="title1" TextStyle="TextStyle.DisplayH6"></RadzenText>
+            <RadzenText Text="Which subject(s) are you qualified to teach? (Select all that apply)"></RadzenText>
+            <div class="language-options">
+                <RadzenDropDown class="custom-select" 
+                                @bind-Value="_command.TeachingProfile.TeachingSubjectsIds"                                          
+                                Data="_teachingSubjects" 
+                                Multiple=true 
+                                AllowSelectAll=false
+                                AllowClear=true
+                                Placeholder="Select subjects" 
+                                AllowFiltering=true
+                                FilterCaseSensitivity=FilterCaseSensitivity.CaseInsensitive
+                                Chips=true
+                                TextProperty="Name" 
+                                ValueProperty="Id"/>
+                <ValidationMessage For="@(() => _command.TeachingProfile.TeachingSubjectsIds)" />
+            </div>
+            <div class="sub-section mt-34px">
+                <div class="inner-input-section">
+                    <div class="input-box">
+                        <RadzenLabel class="input-label" Text="How many years of teaching experience do you have?"></RadzenLabel>
+                        <RadzenDropDown class="custom-select" 
+                                        Data="_numberOfYearsOfTeachingExperience"
+                                        @bind-Value="_command.TeachingProfile.TeachingExperienceInYears" />
+                    </div>
+                </div>
+                <div class="inner-input-section">
+                    <div class="input-box">
+                        <RadzenLabel class="input-label" Text="Which professional teaching certificates do you hold?"></RadzenLabel>
+                        <RadzenDropDown class="custom-select" 
+                                        @bind-Value="_command.TeachingProfile.TeachingCertificatesIds" 
+                                        Data="_teachingCertificates" 
+                                        AllowFiltering=true
+                                        FilterCaseSensitivity=FilterCaseSensitivity.CaseInsensitive
+                                        AllowSelectAll=false
+                                        Multiple=true 
+                                        AllowClear=true 
+                                        Placeholder="Select certificates" 
+                                        Chips=true
+                                        TextProperty="Name" 
+                                        ValueProperty="Id"/>
+                        <ValidationMessage For="@(() => _command.TeachingProfile.TeachingCertificatesIds)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-section4 mt-32px display-flex flex-direction-col align-item-center">
+            <RadzenText Text="Video Introduction" class="title2 text-aligned-center" TextStyle="TextStyle.DisplayH6"></RadzenText>
+
+            <div class="display-flex mt-8px mb-32px justify-content-between text-aligned-center align-item-center flex-direction-col">
+                <RadzenText Text="Your potential students would love to see you in action!" class="video-sb-title text-aligned-center"></RadzenText>
+                <div class="inline-text">
+                    <RadzenText Text="Please upload a short! " class="video-sb-title-gray text-aligned-center"></RadzenText>
+                    <RadzenText Text="! 1-2 minute video!" class="text-aligned-center"></RadzenText>
+                    <RadzenText Text="introducing yourself." class="video-sb-title-gray text-aligned-center"></RadzenText>
+                </div>
+                <RadzenText Text="your teaching style, and what students can expect from your lessons." class="video-sb-title-gray-last text-aligned-center"></RadzenText>
+            </div>
+
+            <div class="video-list" id="videoList"></div>
+
+            <div class="title2 mt-40px align-self-start">Upload video</div>
+
+            <div class="display-flex gap-56px mt-16px md-flex-wrap mb-16px width-full">
+                <div class="display-flex flex-direction-col gap-16px">
+                    <div class="display-flex md-flex-wrap gap-16px">
+                        <button id="myBtn" class="record-btn">
+                            <div class="record-rounded">
+                                <img class="record-img" src="/images/document-upload.png" alt="document-upload" />
+                            </div>
+                            <div class="display-flex gap-4px flex-direction-col">
+                                <p class="record-txt">Record video now</p>
+                                <p class="mx-txt">(Max. File size: 25 MB)</p>
+                            </div>
+                        </button>
+                        <button class="record-btn" @onclick="OnAddVideoUrlClick">
+                            <div class="record-rounded">
+                                <img class="record-img" src="/images/document-upload.png" alt="document-upload" />
+                            </div>
+                            <div class="display-flex gap-4px flex-direction-col">
+                                <p class="record-txt">
+                                    Click to Upload<span class="gray-565656"> your video</span>
+                                </p>
+                                <p class="mx-txt">(Max. File size: 25 MB)</p>
+                            </div>
+                        </button>
+                    </div>
+                    @if (_isAddVideo)
+                    {
+                        <div class="">
+                            <div class="display-flex flex-direction-col gap-4px">
+                                <RadzenLabel class="input-label" Text="URL"></RadzenLabel>
+                                <div class="subs-btn flex-wrap-720px">
+                                    <RadzenTextBox class="input-field-subs"
+                                                   placeholder="Paste YouTube video URL here" />
+                                    <RadzenButton Click="OnShowVideoUrlClick" Text="  Add Video" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (_isVideoAdded)
+                    {
+                        <div class="pending-list">
+                            <div class='display-flex justify-content-between p-10px title-view-container'>
+                                <div>
+                                    <div class='display-flex gap-12px'>
+                                        <RadzenImage class='video-docs-img' src="/images/document-text.png" alt="Thumbnail" />
+                                        <RadzenText class='video-pre-title' Text="@_videoUrl" />
+                                    </div>
+                                    <button class='view-vide-btn'>Click to View</button>
+                                </div>
+                                <button class='dlt-btn' @onclick="OnRemoveVideoClick">
+                                    <RadzenImage class='video-docs-img' src="/images/trash.png" alt="trash" />
+                                </button>
+                            </div>
+                        </div>
+                    }
+                    <ValidationMessage For="@(() => _command.TeachingProfile.VideoIntroductionFileName)" />
+                </div>
+                <div>
+                    <RadzenText class="tips-txt" Text="Tips for Your Video:" />
+
+                    <div class="display-flex gap-24px mt-16px flex-direction-col">
+                        <div class="display-flex gap-14px">
+                            <RadzenImage class="record-img" src="/images/check-green.png" alt="check" />
+                            <RadzenText class="tips-sb-txt" Text="Introduce yourself and the languages you teach." />
+                        </div>
+                        <div class="display-flex gap-14px">
+                            <RadzenImage class="record-img" src="/images/check-green.png" alt="check" />
+                            <RadzenText class="tips-sb-txt" Text="Share your teaching experience and style." />
+
+                        </div>
+                        <div class="display-flex gap-14px">
+                            <RadzenImage class="record-img" src="/images/check-green.png" alt="check" />
+                            <RadzenText class="tips-sb-txt" Text="Explain why students should learn with you" />
+                        </div>
+                        <div class="display-flex gap-14px">
+                            <RadzenImage class="record-img" src="/images/check-green.png" alt="check" />
+                            <RadzenText class="tips-sb-txt" Text="Speak clearly and confidently" />
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="main-section6 mt-32px display-flex flex-direction-col">
+            <RadzenText class="title2 align-self-start" Text="Teacher Introduction" />
+            <RadzenText class="sub-title mt-8px align-self-start" Text="Note: You can’t add external links or use language that violates our
+                    terms and service." />
+
+            <div class="display-flex gap-40px flex-wrap-720px mt-24px">
+                <div class="display-flex flex-direction-col textareaSection">
+                    <RadzenLabel class="input-label mb-4px" Text="About Me"></RadzenLabel>
+                    <RadzenTextArea class="input-field-txtarea" rows="10" cols="50" placeholder="User Name" 
+                                    @bind-Value=@_command.TeachingProfile.AboutMe />
+                    <ValidationMessage For="@(() => _command.TeachingProfile.AboutMe)" />
+                </div>
+
+                <div class="main-section5">
+                    <RadzenText class="input-label mb-16px" Text=" My teaching material (Optional)" />
+                    <div class="teaching-options">
+                        @foreach (var teachingMaterial in _teachingMaterials)
+                        {
+                            <div class="teacher-option @(GetTeachingMaterialClass(teachingMaterial.Id))"
+                                 @onclick="() => ToggleTeachingMaterialSelection(teachingMaterial.Id)">
+                                @teachingMaterial.Name
+                            </div>
+                        }
+                    </div>
+                    <ValidationMessage For="@(() => _command.TeachingProfile.TeachingMaterialsIds)" />
+                </div>
+            </div>
+        </div>
+
+        <div class="main-section7">
+            <RadzenText class="title2 align-self-start" Text="Teaching preference" />
+            <RadzenText class="sb-title mt-8px align-self-start" Text=" Please choose your top interests to help you better match with new
+                    students">
+            </RadzenText>
+            <div class="preference-options">
+                @foreach (var teachingPreference in _teachingPreferences)
+                {
+                    <div class="preference-option @(GetTeachingPreferenceClass(teachingPreference.Id))"
+                         @onclick="() => ToggleTeachingPreferenceSelection(teachingPreference.Id)">
+                        @teachingPreference.Name
+                    </div>
+                }
+            </div>
+            <ValidationMessage For="@(() => _command.TeachingProfile.TeachingPreferencesIds)" />
+        </div>
+        <div class="display-flex mt-40px md-px-16 justify-content-center">
+            <RadzenButton class="btn-fill md-w-100" Text="Create a tutor profile now" Click="OnCreateTutorProfileClick" />
+        </div>
+    </EditForm>
+</div>

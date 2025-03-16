@@ -1,0 +1,48 @@
+﻿@inherits LayoutComponentBase
+@layout Apprendi.Web.Client.Layout.MainLayout
+
+<div class="rz-h-100 main-container ">
+    <MediaQuery Media="@Breakpoints.SmallDown" Matches=@_isSmall MatchesChanged=@MatchesChanged />
+
+    <RadzenLayout class="rz-h-100">
+        <RadzenSidebar Responsive="false" class=@RadzenSidebarClass>
+            <RadzenCard class="rz-h-100 card-sidebar ">
+
+                @if (IsSidebarToggleVisible)
+                {
+                    <div style="justify-content: space-between; display: flex">
+                        <RadzenSidebarToggle Click=@ToggleSideBar />
+                        <RadzenButton Icon="west" Variant="Variant.Text" ButtonStyle="ButtonStyle.Secondary" Click=@CloseSideBar />
+                    </div>
+                }
+
+                <RadzenPanelMenu DisplayStyle=@MenuItemDisplayStyle.IconAndText>
+                    <RadzenPanelMenuItem Text="Account" Path="/settings/account" Icon="person" Click=@CloseSideBarIfSmallScreen />
+                    <RadzenPanelMenuItem Text="Password" Path="/settings/password" Icon="lock" Click=@CloseSideBarIfSmallScreen />
+                    <RadzenPanelMenuItem Text="Email" Path="/settings/email" Icon="email" Click=@CloseSideBarIfSmallScreen />
+                    <RadzenPanelMenuItem Text="Payment methods" Path="/settings/payment-methods" Icon="credit_card" Click=@CloseSideBarIfSmallScreen />
+                    <RadzenPanelMenuItem Text="Payment history" Path="/settings/payment-history" Icon="history" Click=@CloseSideBarIfSmallScreen />
+                    <RadzenPanelMenuItem Text="Autoconfirmation" Path="/settings/autoconfirmation" Icon="check_circle" Click=@CloseSideBarIfSmallScreen />
+                    <RadzenPanelMenuItem Text="Calendar" Path="/settings/calendar" Icon="event" Click=@CloseSideBarIfSmallScreen />
+                    <RadzenPanelMenuItem Text="Notifications" Path="/settings/notifications" Icon="notifications" Click=@CloseSideBarIfSmallScreen />
+                    <RadzenPanelMenuItem Text="Delete Account" Path="/settings/delete-account" Icon="delete_forever" Click=@CloseSideBarIfSmallScreen />
+                </RadzenPanelMenu>
+            </RadzenCard>
+        </RadzenSidebar>
+        
+        <RadzenBody class="main-body rz-h-100">
+            <ChildContent>
+                <RadzenContentContainer >
+                    <RadzenCard class="rz-h-100 card-body">
+                        @Body
+                    </RadzenCard>
+                </RadzenContentContainer>
+            </ChildContent>
+        </RadzenBody>
+
+        @if (_isSidebarExpanded)
+        {
+            <div @onclick=@CloseSideBar class="rz-dialog-mask" style="position: absolute; z-index: 2"></div>
+        }
+    </RadzenLayout>
+</div>

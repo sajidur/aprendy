@@ -1,0 +1,357 @@
+﻿.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    height: 100vh;
+}
+
+::deep .card-container{
+    max-width: 350px;
+}
+
+::deep .disabled {
+    pointer-events: none;
+    color: gray !important;
+}
+
+.divider {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+}
+
+    .divider::before,
+    .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #ccc;
+    }
+
+    .divider span {
+        margin: 0 10px;
+        color: black;
+        font-weight: 500;
+    }
+
+.flex-md {
+    display: none;divider
+    /* display: flex;
+    flex:1 */
+}
+
+.side-img {
+    max-width: 100%;
+    height: 100vh;
+}
+
+
+.login-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+    margin: 8px;
+}
+
+.login-container2 {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    width: 90%;
+    text-align: center;
+    margin: 8px;
+}
+
+
+::deep .links-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    text-underline-offset:auto;
+}
+
+.input-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+}
+
+::deep .link {
+    color: black;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+::deep .social-login button {
+    width: 100%;
+    padding: 10px;
+    margin: 12px 0;
+    display: flex;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border: 1px solid gray;
+    background: white !important;
+    font-weight: 500;
+    color:black!important;
+}
+
+::deep .social-login :hover {
+    background-color: #f7f7f7 !important;
+}
+
+::deep .social-media-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.eye-img {
+    width: 18px;
+    height: 18px;
+}
+
+::deep .google {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    color: black;
+}
+
+::deep .facebook {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    color: black;
+}
+
+::deep .apple {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    color: black;
+}
+
+
+
+::deep .input-field {
+    width: calc(100%);
+    padding: 10px;
+    margin: 5px 0;
+    border: 1.5px solid #ccc;
+    border-radius: 5px;
+}
+
+    ::deep .input-field:hover {
+        border: 1.5px solid #815180;
+    }
+
+    ::deep .input-field:focus-visible {
+        border: 1.5px solid #815180;
+        outline: none;
+    }
+
+::deep .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.label-txt {
+    font-size: 13px;
+}
+
+::deep .password-container {
+    position: relative;
+}
+
+    ::deep .password {
+        width: 86%;
+        padding-right: 40px;
+    }
+
+::deep .show-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    /* transform: translateY(-50%); */
+    cursor: pointer;
+}
+
+
+::deep .password-container ::deep .password-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+}
+
+.remember {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 12px 0;
+    gap: 4px;
+}
+
+::deep .forgot-text {
+    font-size: 12px;
+}
+
+::deep .remember-label {
+    display: flex;
+    gap: 6px;
+    font-size: 14px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.checkbox-input {
+    accent-color: black
+}
+
+.remember input {
+    width: 16px;
+    margin: 10px 0;
+}
+
+::deep .login-btn {
+    width: 100%;
+    padding: 10px;
+    background: #815180;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+    ::deep .login-btn:hover {
+        background: #815489;
+    }
+
+/* ==== 2nd page == */
+.with-side-img {
+    height: 100vh;
+    display: flex;
+    /* margin */
+    /* justify-content: space-between; */
+}
+
+.sub-container {
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    align-items: center;
+    /* padding-top: 72px; */
+    display: flex;
+}
+
+.sub-container1 {
+    width: 100%;
+    /* padding: 0 16px; */
+}
+
+.error-text {
+    color: #ef4444;
+    position: absolute;
+    font-size: 0.875rem
+    /* 14px */
+    ;
+    line-height: 1.25rem
+    /* 20px */
+    ;
+    top: 44px;
+}
+
+::deep .login-title {
+    font-size: 32px;
+    line-height: 40px;
+    color: #0b231d;
+}
+
+.img-input-container {
+    width: 100%;
+}
+
+.login-img {
+    max-width: 100%;
+    height: 100vh;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    /* width: 100%; */
+    background-color: #f8f8f8;
+    padding: 16px;
+}
+
+.nav-link {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif;
+}
+
+.nav-btn {
+    border: 1px solid #815180;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 8px 24px;
+    border-radius: 8px;
+    font-family: sans-serif;
+}
+
+    .nav-btn:hover {
+        background: #815180;
+        color: white;
+    }
+/* ===== navbar === */
+
+@media screen and (min-width: 375) {
+    .login-container2 {
+        width: 90%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .sub-container {
+        width: 50%;
+        justify-content: center;
+        padding-top: 0;
+    }
+
+    .sub-container1 {
+        padding: 0;
+        max-width: 360px
+    }
+
+    .img-input-container {
+        padding: 0;
+        max-width: 360px
+    }
+
+    .flex-md {
+        background: linear-gradient(204.16deg, #97FBFE 63.84%, #FFFFFF 107.88%);
+        display: flex;
+        justify-content: center;
+        flex-grow: 1;
+    }
+
+    .login-container2 {
+        width: 350px;
+    }
+}

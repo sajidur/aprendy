@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+	  <EmitCompilerGeneratedFiles>True</EmitCompilerGeneratedFiles>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\..\01 Apprendi\Apprendi.Application\Features\**\*.cs"> 
+			<Link>Features\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</Compile>
+
+		<Compile Remove="..\..\01 Apprendi\Apprendi.Application\Features\**\*Handler.cs" />
+		<Compile Remove="..\..\01 Apprendi\Apprendi.Application\Features\**\*Mapper.cs" />
+		<Compile Remove="..\..\01 Apprendi\Apprendi.Application\Features\**\*ServerOnlyValidator.cs" />
+		<Compile Remove="..\..\01 Apprendi\Apprendi.Application\Features\ReferenceData\GetGrountriesQuery.cs" />
+
+		<Compile Include="..\..\01 Apprendi\Apprendi.Application\Common\Base\RequestHandler.cs" Link="Base\Common\RequestHandler.cs" />
+		<Compile Include="..\..\01 Apprendi\Apprendi.Application\Common\Base\Request.cs" Link="Base\Common\Request.cs" />
+		<Compile Include="..\..\01 Apprendi\Apprendi.Application\Common\Base\Response.cs" Link="Base\Common\Response.cs" />
+		<Compile Include="..\..\01 Apprendi\Apprendi.Application\Common\Base\RequestValidator.cs" Link="Base\Common\RequestValidator.cs" />
+		<Compile Include="..\..\01 Apprendi\Apprendi.Application\Common\Base\ValidationError.cs" Link="Base\Common\ValidationError.cs" />
+		<Compile Include="..\..\01 Apprendi\Apprendi.Application\Common\Behaviours\UnhandledExceptionBehaviour.cs" Link="Base\Behaviours\UnhandledExceptionBehaviour.cs" />
+
+		<Compile Include="..\..\01 Apprendi\Apprendi.Domain\Enums\TutorSignUpStage.cs" Link="Enums\TutorSignUpStage.cs" />
+
+
+		<Compile Include="..\..\01 Apprendi\Apprendi.Application\Common\Behaviours\ValidationBehaviour.cs" Link="Base\Behaviours\ValidationBehaviour.cs" />
+		<Compile Include="..\..\01 Apprendi\Apprendi.Application\Factories\IResponseFactory.cs" Link="Factories\IResponseFactory.cs" />
+		<Compile Include="..\..\01 Apprendi\Apprendi.Application\Factories\IValidationContextFactory.cs" Link="Factories\IValidationContextFactory.cs" />
+		
+
+		
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+	  <PackageReference Include="MediatR" Version="12.4.1" />
+	  <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.3" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.3" />
+	  <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Apprendi.Application.Common.SourceGenerator\Apprendi.Application.Common.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+</Project>

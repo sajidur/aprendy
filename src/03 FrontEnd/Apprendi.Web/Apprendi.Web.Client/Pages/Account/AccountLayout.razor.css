@@ -1,0 +1,52 @@
+﻿.main-container {
+    max-width: 1024px;
+    margin: auto
+}
+
+::deep .rz-sidebar-toggle {
+    margin-left: 3px;
+}
+
+::deep .side-bar-opened {
+    width: var(--rz-sidebar-width) !important;
+    max-width: var(--rz-sidebar-width) !important;
+}
+
+::deep .sidebar {
+    background: transparent;
+    padding: 16px
+}
+
+@media (max-width: 768px) {
+    ::deep .rz-sidebar {
+        position: absolute !important;
+        z-index: 3 !important;
+        width: max-content;
+        max-width: 56px;
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
+
+    ::deep .main-body {
+        width: auto;
+    }
+
+    ::deep .rz-body {
+        padding: 0;
+    }
+
+    ::deep .card-body {
+        border-radius: 0;
+        height: 100%;
+        margin-left: 56px;
+    }
+
+    ::deep .sidebar {
+        padding: 0
+    }
+
+    ::deep .card-sidebar {
+        padding: 0;
+        border-radius: 0;
+    }
+}

@@ -1,0 +1,32 @@
+﻿@page "/signup"
+@attribute [Authorize]
+<div class="rz-h-100 rz-w-100 main-div">
+    <RadzenCard class="signup-container">
+        <h3 class="signup-header">Complete Your Registration</h3>
+        <p class="signup-description">Please choose your role to proceed with the signup process.</p>
+
+        <div class="signup-options">
+            <!-- Student Card -->
+            <RadzenCard class="signup-card">
+                <RadzenStack Orientation="Orientation.Horizontal" class="signup-icon-title" >
+                    <RadzenIcon Icon="school" class="signup-icon student-icon" IconStyle="IconStyle.Primary" />
+                    <h4 class="signup-title">Student</h4>
+                </RadzenStack>
+                <p class="signup-card-description">Sign up as a learner to access resources and courses.</p>
+                <div class="signup-spacer"></div>
+                <RadzenButton class="signup-button" Text="Choose" ButtonStyle="ButtonStyle.Primary" Click=@OnChooseStudentUpClick />
+            </RadzenCard>
+
+            <!-- Tutor Card -->
+            <RadzenCard class="signup-card">
+                <RadzenStack Orientation="Orientation.Horizontal" class="signup-icon-title">
+                    <RadzenIcon Icon="menu_book" class="signup-icon tutor-icon" IconStyle="IconStyle.Secondary" />
+                    <h4 class="signup-title">Tutor</h4>
+                </RadzenStack>
+                <p class="signup-card-description">Register as a tutor to share your expertise and teach students.</p>
+                <div class="signup-spacer"></div>
+                <RadzenButton class="signup-button" Text="Choose" ButtonStyle="ButtonStyle.Secondary" Click=@OnChooseTutorUpClick />
+            </RadzenCard>
+        </div>
+    </RadzenCard>
+</div>

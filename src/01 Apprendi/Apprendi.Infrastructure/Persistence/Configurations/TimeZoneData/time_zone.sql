@@ -1,0 +1,10 @@
+if NOT EXISTS(SELECT TOP 1 NULL FROM TimeZoneData)
+BEGIN
+	BULK INSERT TimeZoneData
+	FROM 'time_zone_filename'
+	WITH (
+		FIELDTERMINATOR = ',',
+		ROWTERMINATOR = '0x0a',
+		FIRSTROW = 0
+	);
+END

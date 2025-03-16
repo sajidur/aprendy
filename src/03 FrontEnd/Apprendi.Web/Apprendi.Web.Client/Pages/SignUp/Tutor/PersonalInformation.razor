@@ -1,0 +1,173 @@
+﻿@attribute [Authorize]
+
+@using Apprendi.Application.Features.ReferenceData
+@using Apprendi.Application.Features.SignUp
+@using Radzen.Blazor
+@using Radzen;
+
+@page "/signup/tutor/personal-information"
+
+<div  class="main-container">
+    <EditForm Model="_command">
+        <FluentValidator />
+        <RadzenText Text="Personal Information" TextStyle="TextStyle.DisplayH4" class="first-Page-title"></RadzenText>
+        <div class="top-box">
+            <div class="main-section1">
+                <p class="title1">Basic Information</p>
+                <div class="section-box">
+                    <div class="sub-section">
+                        <div class="inner-input-section">
+                            <div class="input-box">
+                                <RadzenLabel class="input-label">First Name</RadzenLabel>
+                                <RadzenTextBox @bind-value="_command.PersonalInformation.FirstName" class="input-field" placeholder="First Name" />
+                                <ValidationMessage For="@(() => _command.PersonalInformation.FirstName)" />
+                            </div>
+                            <div class="input-box">
+                                <RadzenLabel class="input-label">Last Name</RadzenLabel>
+                                <RadzenTextBox @bind-value="_command.PersonalInformation.LastName" class="input-field" type="text" placeholder="Last Name" />
+                                <ValidationMessage For="@(() => _command.PersonalInformation.LastName)" />
+                            </div>
+                        </div>
+
+                        <div class="inner-input-section">
+                            <div class="input-box">
+                                <RadzenLabel class="input-label">From</RadzenLabel>
+                                <RadzenDropDown class="custom-select" 
+                                                @bind-Value="_command.PersonalInformation.CountryOfBirthId" 
+                                                Data="_countries" 
+                                                TextProperty="Name" 
+                                                ValueProperty="Id"
+                                                Placeholder="Select Country" />
+                                <ValidationMessage For="@(() => _command.PersonalInformation.CountryOfBirthId)" />
+                            </div>
+                            <div class="input-box">
+                                <div class="input-box">
+                                    <RadzenLabel class="input-label">Living In</RadzenLabel>
+                                    <RadzenDropDown class="custom-select" 
+                                                    @bind-Value="_command.PersonalInformation.CountryResidencyId" 
+                                                    Data="_countries" 
+                                                    TextProperty="Name" ValueProperty="Id"
+                                                    Placeholder="Select an item" />
+                                    <ValidationMessage For="@(() => _command.PersonalInformation.CountryResidencyId)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sub-section">
+                        <div class="inner-input-section">
+                            <div class="input-box">
+                                <RadzenLabel class="input-label">Nickname</RadzenLabel>
+                                <RadzenTextBox @bind-value="_command.PersonalInformation.Nickname" 
+                                                class="input-field" 
+                                                placeholder="What do you want teachers to call you?" />
+                                <ValidationMessage For="@(() => _command.PersonalInformation.Nickname)" />
+                            </div>
+                        </div>
+
+                        <div class="inner-input-section">
+                            <div class="input-box">
+                                <RadzenLabel class="input-label">Date of birth</RadzenLabel>
+                                <RadzenDatePicker class="custom-datepicker"
+                                                    DateFormat="dd MMM yyyy"
+                                                    @bind-Value="_command.PersonalInformation.DateOfBirth" />
+                                <ValidationMessage For="@(() => _command.PersonalInformation.DateOfBirth)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-section2">
+                <div class="title-section">
+
+                    <p class="title">Language skills</p>
+                    <p class="sub-title">
+                        Which languages do you speak, and what is your proficiency level
+                        in each?
+                    </p>
+                </div>
+                <div class="section-box">
+                    @for (var i = 0; i < _command.PersonalInformation.SpokenLanguages.Count; i++)
+                    {
+                        var index = i;
+                        <RadzenRow>
+                            <RadzenColumn Size="5">
+                                <RadzenLabel class="input-label pb-4px">Language</RadzenLabel>
+                                <RadzenDropDown class="custom-select"
+                                                @bind-Value="_command.PersonalInformation.SpokenLanguages[index].LanguageId"
+                                                Data="_languages"
+                                                TextProperty="Name"
+                                                ValueProperty="Id"
+                                                Placeholder="Select Language" />
+                                <ValidationMessage For="@(() => _command.PersonalInformation.SpokenLanguages[index].LanguageId)" />
+                            </RadzenColumn>
+                            <RadzenColumn Size="1">
+
+                            </RadzenColumn>
+
+                            <RadzenColumn Size="5">
+                                <RadzenLabel class="input-label pb-4px">Proficiency Level</RadzenLabel>
+                                <RadzenDropDown class="custom-select"
+                                                @bind-Value="_command.PersonalInformation.SpokenLanguages[index].ProficiencyLevelId"
+                                                Data="_languageProficiencyLevels"
+                                                TextProperty="Name"
+                                                ValueProperty="Id"
+                                                Placeholder="Select Proficiency Level" />
+                                <ValidationMessage For="@(() => _command.PersonalInformation.SpokenLanguages[index].ProficiencyLevelId)" />
+                            </RadzenColumn>
+                            <RadzenColumn Size="1" class="remove-icon">
+                                @if (index > 0)
+                                {
+                                    <RadzenIcon Icon="delete" class="delete-icon" @onclick="() => RemoveSpokenLanguageClick(index)" />
+                                }
+                            </RadzenColumn>
+                        </RadzenRow>
+                    }
+                    <RadzenButton class="button-primary" Text="Add Another Language" Click="AddSpokenLanguageClick" />
+                </div>
+            </div>
+
+            <div class="main-section3">
+                <div class="title-section3 title-center">
+                    <RadzenText Text="Profile Photo" TextStyle="TextStyle.DisplayH6" class="first-Page-title"></RadzenText>
+                    <RadzenText Text="Your photo has to respect the following characteristics: Does your photo look like these? If so, that’s great!" class="sub-title max-w-347"></RadzenText>
+                </div>
+                <div class="section-box">
+                    <div class="img-container">
+                        <div class="img-sub-container">
+                            <RadzenImage id="preview" class="profile-pic" src="/images/default-img.jpg" alt="Profile Picture" />
+                            <div class="img-txt-container">
+                                <div class="img-type-txt-container">
+
+                                    <RadzenText Text="250x250 px min" class="img-type-txt"></RadzenText>
+                                    <div class="dot"></div>
+                                    <RadzenText Text="JPG, PNG, BMP only" class="img-type-txt"></RadzenText>
+                                    <div class="dot"></div>
+                                    <RadzenText Text="2 MB max" class="img-type-txt"></RadzenText>
+                                </div>
+                                <RadzenText Text=" Your profile photo should clearly show your eyes and face,
+                                feature only you (with no other people), be well-framed (not
+                                too close or too far), and have good clarity with proper
+                                lighting." class="sub-title"></RadzenText>
+                            </div>
+                        </div>
+                        <div class="mt-56 gap-16 flex-wrap">
+                            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text="More requirements" Variant="Variant.Text" />
+                            <RadzenUpload Multiple="false" Accept=".jpg,.jepg,.png" ChooseText="Choose a Photo" Auto />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8px md-px-16 display-flex align-item-center flex-direction-col gap-16">
+                <label class="remember-label">
+                    <RadzenCheckBox @bind-Value="_command.PersonalInformation.IsPhotoPolicyAgreed" />
+                    <RadzenText class="checkbox-txt" Text="I’m aware that if my profile photo does not respect the listed characteristics, my application to become a teacher could be rejected." />
+                </label>
+                <ValidationMessage For="@(() => _command.PersonalInformation.IsPhotoPolicyAgreed)" />
+
+                <RadzenButton class="btn-fill" id="continueBtn" Text="Continue" Click="OnContinueClick" ></RadzenButton>
+            </div>
+        </div>
+    </EditForm>
+</div>

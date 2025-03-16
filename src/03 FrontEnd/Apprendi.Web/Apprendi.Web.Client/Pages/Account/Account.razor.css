@@ -1,0 +1,4 @@
+﻿::deep .abbreviation {
+    color: var(--rz-text-tertiary-color);
+    font-weight: 300;
+}

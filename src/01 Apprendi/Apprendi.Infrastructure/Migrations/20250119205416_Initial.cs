@@ -1,0 +1,917 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace Apprendi.Infrastructure.Migrations
+{
+    /// <inheritdoc />
+    public partial class Initial : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "Countries",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    CountryName = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Currencies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Symbol = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    DecimalPlaces = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Currencies", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Languages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Languages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeZoneData",
+                columns: table => new
+                {
+                    ZoneName = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: false),
+                    CountryCode = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    Abbreviation = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    TimeStart = table.Column<long>(type: "bigint", nullable: false),
+                    GmtOffset = table.Column<long>(type: "bigint", nullable: false),
+                    DaylightSavingTime = table.Column<string>(type: "nvarchar(1)", maxLength: 1, nullable: false)
+                },
+                constraints: table =>
+                {
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeZones",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: false),
+                    CountryId = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeZones", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TimeZones_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FistName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: false),
+                    TimeZoneId = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: true),
+                    CurrencyId = table.Column<int>(type: "int", nullable: true),
+                    LanguageId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Currencies_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Users_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Users_TimeZones_TimeZoneId",
+                        column: x => x.TimeZoneId,
+                        principalTable: "TimeZones",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => new { x.RoleId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Countries",
+                columns: new[] { "Id", "CountryName" },
+                values: new object[,]
+                {
+                    { "AD", "Andorra" },
+                    { "AE", "United Arab Emirates" },
+                    { "AF", "Afghanistan" },
+                    { "AG", "Antigua & Barbuda" },
+                    { "AI", "Anguilla" },
+                    { "AL", "Albania" },
+                    { "AM", "Armenia" },
+                    { "AO", "Angola" },
+                    { "AQ", "Antarctica" },
+                    { "AR", "Argentina" },
+                    { "AS", "American Samoa" },
+                    { "AT", "Austria" },
+                    { "AU", "Australia" },
+                    { "AW", "Aruba" },
+                    { "AX", "Åland Islands" },
+                    { "AZ", "Azerbaijan" },
+                    { "BA", "Bosnia & Herzegovina" },
+                    { "BB", "Barbados" },
+                    { "BD", "Bangladesh" },
+                    { "BE", "Belgium" },
+                    { "BF", "Burkina Faso" },
+                    { "BG", "Bulgaria" },
+                    { "BH", "Bahrain" },
+                    { "BI", "Burundi" },
+                    { "BJ", "Benin" },
+                    { "BL", "St. Barthélemy" },
+                    { "BM", "Bermuda" },
+                    { "BN", "Brunei" },
+                    { "BO", "Bolivia" },
+                    { "BQ", "Caribbean Netherlands" },
+                    { "BR", "Brazil" },
+                    { "BS", "Bahamas" },
+                    { "BT", "Bhutan" },
+                    { "BW", "Botswana" },
+                    { "BY", "Belarus" },
+                    { "BZ", "Belize" },
+                    { "CA", "Canada" },
+                    { "CC", "Cocos (Keeling) Islands" },
+                    { "CD", "Congo - Kinshasa" },
+                    { "CF", "Central African Republic" },
+                    { "CG", "Congo - Brazzaville" },
+                    { "CH", "Switzerland" },
+                    { "CI", "Côte d’Ivoire" },
+                    { "CK", "Cook Islands" },
+                    { "CL", "Chile" },
+                    { "CM", "Cameroon" },
+                    { "CN", "China" },
+                    { "CO", "Colombia" },
+                    { "CR", "Costa Rica" },
+                    { "CU", "Cuba" },
+                    { "CV", "Cape Verde" },
+                    { "CW", "Curaçao" },
+                    { "CX", "Christmas Island" },
+                    { "CY", "Cyprus" },
+                    { "CZ", "Czechia" },
+                    { "DE", "Germany" },
+                    { "DG", "Diego Garcia" },
+                    { "DJ", "Djibouti" },
+                    { "DK", "Denmark" },
+                    { "DM", "Dominica" },
+                    { "DO", "Dominican Republic" },
+                    { "DZ", "Algeria" },
+                    { "EC", "Ecuador" },
+                    { "EE", "Estonia" },
+                    { "EG", "Egypt" },
+                    { "EH", "Western Sahara" },
+                    { "ES", "Spain" },
+                    { "ET", "Ethiopia" },
+                    { "FI", "Finland" },
+                    { "FJ", "Fiji" },
+                    { "FK", "Falkland Islands" },
+                    { "FM", "Micronesia" },
+                    { "FR", "France" },
+                    { "GA", "Gabon" },
+                    { "GB", "United Kingdom" },
+                    { "GD", "Grenada" },
+                    { "GE", "Georgia" },
+                    { "GF", "French Guiana" },
+                    { "GG", "Guernsey" },
+                    { "GH", "Ghana" },
+                    { "GI", "Gibraltar" },
+                    { "GL", "Greenland" },
+                    { "GM", "Gambia" },
+                    { "GN", "Guinea" },
+                    { "GP", "Guadeloupe" },
+                    { "GQ", "Equatorial Guinea" },
+                    { "GR", "Greece" },
+                    { "GS", "South Georgia & South Sandwich Islands" },
+                    { "GT", "Guatemala" },
+                    { "GU", "Guam" },
+                    { "GW", "Guinea-Bissau" },
+                    { "GY", "Guyana" },
+                    { "HK", "Hong Kong SAR China" },
+                    { "HN", "Honduras" },
+                    { "HR", "Croatia" },
+                    { "HT", "Haiti" },
+                    { "HU", "Hungary" },
+                    { "ID", "Indonesia" },
+                    { "IE", "Ireland" },
+                    { "IL", "Israel" },
+                    { "IM", "Isle of Man" },
+                    { "IQ", "Iraq" },
+                    { "IR", "Iran" },
+                    { "IS", "Iceland" },
+                    { "IT", "Italy" },
+                    { "JE", "Jersey" },
+                    { "JM", "Jamaica" },
+                    { "JO", "Jordan" },
+                    { "JP", "Japan" },
+                    { "KE", "Kenya" },
+                    { "KG", "Kyrgyzstan" },
+                    { "KH", "Cambodia" },
+                    { "KI", "Kiribati" },
+                    { "KM", "Comoros" },
+                    { "KN", "St. Kitts & Nevis" },
+                    { "KP", "North Korea" },
+                    { "KR", "South Korea" },
+                    { "KW", "Kuwait" },
+                    { "KY", "Cayman Islands" },
+                    { "KZ", "Kazakhstan" },
+                    { "LA", "Laos" },
+                    { "LB", "Lebanon" },
+                    { "LC", "St. Lucia" },
+                    { "LI", "Liechtenstein" },
+                    { "LK", "Sri Lanka" },
+                    { "LR", "Liberia" },
+                    { "LS", "Lesotho" },
+                    { "LT", "Lithuania" },
+                    { "LU", "Luxembourg" },
+                    { "LV", "Latvia" },
+                    { "LY", "Libya" },
+                    { "MA", "Morocco" },
+                    { "MC", "Monaco" },
+                    { "MD", "Moldova" },
+                    { "ME", "Montenegro" },
+                    { "MF", "St. Martin" },
+                    { "MG", "Madagascar" },
+                    { "MH", "Marshall Islands" },
+                    { "MK", "North Macedonia" },
+                    { "ML", "Mali" },
+                    { "MN", "Mongolia" },
+                    { "MO", "Macao SAR China" },
+                    { "MP", "Northern Mariana Islands" },
+                    { "MQ", "Martinique" },
+                    { "MR", "Mauritania" },
+                    { "MS", "Montserrat" },
+                    { "MT", "Malta" },
+                    { "MU", "Mauritius" },
+                    { "MV", "Maldives" },
+                    { "MW", "Malawi" },
+                    { "MX", "Mexico" },
+                    { "MY", "Malaysia" },
+                    { "MZ", "Mozambique" },
+                    { "NA", "Namibia" },
+                    { "NC", "New Caledonia" },
+                    { "NE", "Niger" },
+                    { "NF", "Norfolk Island" },
+                    { "NG", "Nigeria" },
+                    { "NI", "Nicaragua" },
+                    { "NL", "Netherlands" },
+                    { "NO", "Norway" },
+                    { "NR", "Nauru" },
+                    { "NU", "Niue" },
+                    { "NZ", "New Zealand" },
+                    { "OM", "Oman" },
+                    { "PA", "Panama" },
+                    { "PE", "Peru" },
+                    { "PF", "French Polynesia" },
+                    { "PG", "Papua New Guinea" },
+                    { "PH", "Philippines" },
+                    { "PK", "Pakistan" },
+                    { "PL", "Poland" },
+                    { "PM", "St. Pierre & Miquelon" },
+                    { "PN", "Pitcairn Islands" },
+                    { "PR", "Puerto Rico" },
+                    { "PS", "Palestinian Territories" },
+                    { "PT", "Portugal" },
+                    { "PW", "Palau" },
+                    { "PY", "Paraguay" },
+                    { "QA", "Qatar" },
+                    { "RE", "Réunion" },
+                    { "RO", "Romania" },
+                    { "RS", "Serbia" },
+                    { "RU", "Russia" },
+                    { "RW", "Rwanda" },
+                    { "SA", "Saudi Arabia" },
+                    { "SB", "Solomon Islands" },
+                    { "SC", "Seychelles" },
+                    { "SD", "Sudan" },
+                    { "SE", "Sweden" },
+                    { "SG", "Singapore" },
+                    { "SI", "Slovenia" },
+                    { "SJ", "Svalbard & Jan Mayen" },
+                    { "SK", "Slovakia" },
+                    { "SL", "Sierra Leone" },
+                    { "SM", "San Marino" },
+                    { "SN", "Senegal" },
+                    { "SO", "Somalia" },
+                    { "SR", "Suriname" },
+                    { "SS", "South Sudan" },
+                    { "ST", "São Tomé & Príncipe" },
+                    { "SV", "El Salvador" },
+                    { "SX", "Sint Maarten" },
+                    { "SY", "Syria" },
+                    { "SZ", "Eswatini" },
+                    { "TA", "Tristan da Cunha" },
+                    { "TC", "Turks & Caicos Islands" },
+                    { "TD", "Chad" },
+                    { "TF", "French Southern Territories" },
+                    { "TG", "Togo" },
+                    { "TH", "Thailand" },
+                    { "TJ", "Tajikistan" },
+                    { "TK", "Tokelau" },
+                    { "TL", "Timor-Leste" },
+                    { "TM", "Turkmenistan" },
+                    { "TN", "Tunisia" },
+                    { "TO", "Tonga" },
+                    { "TR", "Turkey" },
+                    { "TT", "Trinidad & Tobago" },
+                    { "TV", "Tuvalu" },
+                    { "TW", "Taiwan" },
+                    { "TZ", "Tanzania" },
+                    { "UA", "Ukraine" },
+                    { "UG", "Uganda" },
+                    { "UM", "U.S. Outlying Islands" },
+                    { "US", "United States" },
+                    { "UY", "Uruguay" },
+                    { "UZ", "Uzbekistan" },
+                    { "VA", "Vatican City" },
+                    { "VC", "St. Vincent & Grenadines" },
+                    { "VE", "Venezuela" },
+                    { "VG", "British Virgin Islands" },
+                    { "VI", "U.S. Virgin Islands" },
+                    { "VU", "Vanuatu" },
+                    { "WF", "Wallis & Futuna" },
+                    { "WS", "Samoa" },
+                    { "YE", "Yemen" },
+                    { "YT", "Mayotte" },
+                    { "ZA", "South Africa" },
+                    { "ZM", "Zambia" },
+                    { "ZW", "Zimbabwe" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Currencies",
+                columns: new[] { "Id", "Code", "DecimalPlaces", "Name", "Symbol" },
+                values: new object[,]
+                {
+                    { 1, "USD", 2, "United States Dollar", "$" },
+                    { 2, "EUR", 2, "Euro", "€" },
+                    { 3, "JPY", 0, "Japanese Yen", "¥" },
+                    { 4, "GBP", 2, "British Pound Sterling", "£" },
+                    { 5, "CHF", 2, "Swiss Franc", "CHF" },
+                    { 6, "CAD", 2, "Canadian Dollar", "$" },
+                    { 7, "AUD", 2, "Australian Dollar", "$" },
+                    { 8, "CNY", 2, "Chinese Yuan Renminbi", "¥" },
+                    { 9, "HKD", 2, "Hong Kong Dollar", "$" },
+                    { 10, "NZD", 2, "New Zealand Dollar", "$" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Languages",
+                columns: new[] { "Id", "Code", "Name" },
+                values: new object[,]
+                {
+                    { 1, "EN", "English" },
+                    { 2, "FR", "French" },
+                    { 3, "ES", "Spanish" },
+                    { 4, "DE", "German" },
+                    { 5, "ZH", "Chinese" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Admin" },
+                    { 2, "Tutor" },
+                    { 3, "Student" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TimeZones",
+                columns: new[] { "Id", "CountryId" },
+                values: new object[,]
+                {
+                    { "Africa/Abidjan", "CI" },
+                    { "Africa/Accra", "GH" },
+                    { "Africa/Addis_Ababa", "ET" },
+                    { "Africa/Algiers", "DZ" },
+                    { "Africa/Bamako", "ML" },
+                    { "Africa/Bangui", "CF" },
+                    { "Africa/Banjul", "GM" },
+                    { "Africa/Bissau", "GW" },
+                    { "Africa/Blantyre", "MW" },
+                    { "Africa/Brazzaville", "CG" },
+                    { "Africa/Bujumbura", "BI" },
+                    { "Africa/Cairo", "EG" },
+                    { "Africa/Casablanca", "MA" },
+                    { "Africa/Ceuta", "ES" },
+                    { "Africa/Conakry", "GN" },
+                    { "Africa/Dakar", "SN" },
+                    { "Africa/Dar_es_Salaam", "TZ" },
+                    { "Africa/Djibouti", "DJ" },
+                    { "Africa/Douala", "CM" },
+                    { "Africa/El_Aaiun", "EH" },
+                    { "Africa/Freetown", "SL" },
+                    { "Africa/Gaborone", "BW" },
+                    { "Africa/Harare", "ZW" },
+                    { "Africa/Johannesburg", "ZA" },
+                    { "Africa/Juba", "SS" },
+                    { "Africa/Kampala", "UG" },
+                    { "Africa/Khartoum", "SD" },
+                    { "Africa/Kigali", "RW" },
+                    { "Africa/Kinshasa", "CD" },
+                    { "Africa/Lagos", "NG" },
+                    { "Africa/Libreville", "GA" },
+                    { "Africa/Lome", "TG" },
+                    { "Africa/Luanda", "AO" },
+                    { "Africa/Lubumbashi", "CD" },
+                    { "Africa/Lusaka", "ZM" },
+                    { "Africa/Malabo", "GQ" },
+                    { "Africa/Maputo", "MZ" },
+                    { "Africa/Maseru", "LS" },
+                    { "Africa/Mbabane", "SZ" },
+                    { "Africa/Mogadishu", "SO" },
+                    { "Africa/Monrovia", "LR" },
+                    { "Africa/Nairobi", "KE" },
+                    { "Africa/Ndjamena", "TD" },
+                    { "Africa/Niamey", "NE" },
+                    { "Africa/Nouakchott", "MR" },
+                    { "Africa/Ouagadougou", "BF" },
+                    { "Africa/Porto-Novo", "BJ" },
+                    { "Africa/Sao_Tome", "ST" },
+                    { "Africa/Tripoli", "LY" },
+                    { "Africa/Tunis", "TN" },
+                    { "Africa/Windhoek", "NA" },
+                    { "America/Adak", "US" },
+                    { "America/Anchorage", "US" },
+                    { "America/Anguilla", "AI" },
+                    { "America/Antigua", "AG" },
+                    { "America/Araguaina", "BR" },
+                    { "America/Argentina/La_Rioja", "AR" },
+                    { "America/Argentina/Rio_Gallegos", "AR" },
+                    { "America/Argentina/Salta", "AR" },
+                    { "America/Argentina/San_Juan", "AR" },
+                    { "America/Argentina/San_Luis", "AR" },
+                    { "America/Argentina/Tucuman", "AR" },
+                    { "America/Argentina/Ushuaia", "AR" },
+                    { "America/Aruba", "AW" },
+                    { "America/Asuncion", "PY" },
+                    { "America/Bahia", "BR" },
+                    { "America/Bahia_Banderas", "MX" },
+                    { "America/Barbados", "BB" },
+                    { "America/Belem", "BR" },
+                    { "America/Belize", "BZ" },
+                    { "America/Blanc-Sablon", "CA" },
+                    { "America/Boa_Vista", "BR" },
+                    { "America/Bogota", "CO" },
+                    { "America/Boise", "US" },
+                    { "America/Cambridge_Bay", "CA" },
+                    { "America/Campo_Grande", "BR" },
+                    { "America/Cancun", "MX" },
+                    { "America/Caracas", "VE" },
+                    { "America/Cayenne", "GF" },
+                    { "America/Cayman", "KY" },
+                    { "America/Chicago", "US" },
+                    { "America/Chihuahua", "MX" },
+                    { "America/Costa_Rica", "CR" },
+                    { "America/Creston", "CA" },
+                    { "America/Cuiaba", "BR" },
+                    { "America/Curacao", "CW" },
+                    { "America/Danmarkshavn", "GL" },
+                    { "America/Dawson", "CA" },
+                    { "America/Dawson_Creek", "CA" },
+                    { "America/Denver", "US" },
+                    { "America/Detroit", "US" },
+                    { "America/Dominica", "DM" },
+                    { "America/Edmonton", "CA" },
+                    { "America/Eirunepe", "BR" },
+                    { "America/El_Salvador", "SV" },
+                    { "America/Fort_Nelson", "CA" },
+                    { "America/Fortaleza", "BR" },
+                    { "America/Glace_Bay", "CA" },
+                    { "America/Goose_Bay", "CA" },
+                    { "America/Grand_Turk", "TC" },
+                    { "America/Grenada", "GD" },
+                    { "America/Guadeloupe", "GP" },
+                    { "America/Guatemala", "GT" },
+                    { "America/Guayaquil", "EC" },
+                    { "America/Guyana", "GY" },
+                    { "America/Halifax", "CA" },
+                    { "America/Havana", "CU" },
+                    { "America/Hermosillo", "MX" },
+                    { "America/Indiana/Knox", "US" },
+                    { "America/Indiana/Marengo", "US" },
+                    { "America/Indiana/Petersburg", "US" },
+                    { "America/Indiana/Tell_City", "US" },
+                    { "America/Indiana/Vevay", "US" },
+                    { "America/Indiana/Vincennes", "US" },
+                    { "America/Indiana/Winamac", "US" },
+                    { "America/Inuvik", "CA" },
+                    { "America/Iqaluit", "CA" },
+                    { "America/Jamaica", "JM" },
+                    { "America/Juneau", "US" },
+                    { "America/Kentucky/Monticello", "US" },
+                    { "America/Kralendijk", "BQ" },
+                    { "America/La_Paz", "BO" },
+                    { "America/Lima", "PE" },
+                    { "America/Los_Angeles", "US" },
+                    { "America/Lower_Princes", "SX" },
+                    { "America/Maceio", "BR" },
+                    { "America/Managua", "NI" },
+                    { "America/Manaus", "BR" },
+                    { "America/Marigot", "MF" },
+                    { "America/Martinique", "MQ" },
+                    { "America/Matamoros", "MX" },
+                    { "America/Mazatlan", "MX" },
+                    { "America/Menominee", "US" },
+                    { "America/Merida", "MX" },
+                    { "America/Metlakatla", "US" },
+                    { "America/Mexico_City", "MX" },
+                    { "America/Miquelon", "PM" },
+                    { "America/Moncton", "CA" },
+                    { "America/Monterrey", "MX" },
+                    { "America/Montevideo", "UY" },
+                    { "America/Montserrat", "MS" },
+                    { "America/Nassau", "BS" },
+                    { "America/New_York", "US" },
+                    { "America/Nome", "US" },
+                    { "America/Noronha", "BR" },
+                    { "America/North_Dakota/Beulah", "US" },
+                    { "America/North_Dakota/Center", "US" },
+                    { "America/North_Dakota/New_Salem", "US" },
+                    { "America/Ojinaga", "MX" },
+                    { "America/Panama", "PA" },
+                    { "America/Paramaribo", "SR" },
+                    { "America/Phoenix", "US" },
+                    { "America/Port_of_Spain", "TT" },
+                    { "America/Port-au-Prince", "HT" },
+                    { "America/Porto_Velho", "BR" },
+                    { "America/Puerto_Rico", "PR" },
+                    { "America/Punta_Arenas", "CL" },
+                    { "America/Rankin_Inlet", "CA" },
+                    { "America/Recife", "BR" },
+                    { "America/Regina", "CA" },
+                    { "America/Resolute", "CA" },
+                    { "America/Rio_Branco", "BR" },
+                    { "America/Santarem", "BR" },
+                    { "America/Santiago", "CL" },
+                    { "America/Santo_Domingo", "DO" },
+                    { "America/Sao_Paulo", "BR" },
+                    { "America/Scoresbysund", "GL" },
+                    { "America/Sitka", "US" },
+                    { "America/St_Barthelemy", "BL" },
+                    { "America/St_Johns", "CA" },
+                    { "America/St_Kitts", "KN" },
+                    { "America/St_Lucia", "LC" },
+                    { "America/St_Thomas", "VI" },
+                    { "America/St_Vincent", "VC" },
+                    { "America/Swift_Current", "CA" },
+                    { "America/Tegucigalpa", "HN" },
+                    { "America/Thule", "GL" },
+                    { "America/Tijuana", "MX" },
+                    { "America/Toronto", "CA" },
+                    { "America/Tortola", "VG" },
+                    { "America/Vancouver", "CA" },
+                    { "America/Whitehorse", "CA" },
+                    { "America/Winnipeg", "CA" },
+                    { "America/Yakutat", "US" },
+                    { "Antarctica/Casey", "AQ" },
+                    { "Antarctica/Davis", "AQ" },
+                    { "Antarctica/DumontDUrville", "AQ" },
+                    { "Antarctica/Macquarie", "AU" },
+                    { "Antarctica/Mawson", "AQ" },
+                    { "Antarctica/McMurdo", "AQ" },
+                    { "Antarctica/Palmer", "AQ" },
+                    { "Antarctica/Rothera", "AQ" },
+                    { "Antarctica/Syowa", "AQ" },
+                    { "Antarctica/Vostok", "AQ" },
+                    { "Arctic/Longyearbyen", "SJ" },
+                    { "Asia/Aden", "YE" },
+                    { "Asia/Almaty", "KZ" },
+                    { "Asia/Amman", "JO" },
+                    { "Asia/Anadyr", "RU" },
+                    { "Asia/Aqtau", "KZ" },
+                    { "Asia/Aqtobe", "KZ" },
+                    { "Asia/Ashgabat", "TM" },
+                    { "Asia/Atyrau", "KZ" },
+                    { "Asia/Baghdad", "IQ" },
+                    { "Asia/Bahrain", "BH" },
+                    { "Asia/Baku", "AZ" },
+                    { "Asia/Bangkok", "TH" },
+                    { "Asia/Barnaul", "RU" },
+                    { "Asia/Beirut", "LB" },
+                    { "Asia/Bishkek", "KG" },
+                    { "Asia/Brunei", "BN" },
+                    { "Asia/Chita", "RU" },
+                    { "Asia/Colombo", "LK" },
+                    { "Asia/Damascus", "SY" },
+                    { "Asia/Dhaka", "BD" },
+                    { "Asia/Dili", "TL" },
+                    { "Asia/Dubai", "AE" },
+                    { "Asia/Dushanbe", "TJ" },
+                    { "Asia/Famagusta", "CY" },
+                    { "Asia/Gaza", "PS" },
+                    { "Asia/Hebron", "PS" },
+                    { "Asia/Hong_Kong", "HK" },
+                    { "Asia/Hovd", "MN" },
+                    { "Asia/Irkutsk", "RU" },
+                    { "Asia/Jakarta", "ID" },
+                    { "Asia/Jayapura", "ID" },
+                    { "Asia/Jerusalem", "IL" },
+                    { "Asia/Kabul", "AF" },
+                    { "Asia/Kamchatka", "RU" },
+                    { "Asia/Karachi", "PK" },
+                    { "Asia/Khandyga", "RU" },
+                    { "Asia/Krasnoyarsk", "RU" },
+                    { "Asia/Kuala_Lumpur", "MY" },
+                    { "Asia/Kuching", "MY" },
+                    { "Asia/Kuwait", "KW" },
+                    { "Asia/Macau", "MO" },
+                    { "Asia/Magadan", "RU" },
+                    { "Asia/Makassar", "ID" },
+                    { "Asia/Manila", "PH" },
+                    { "Asia/Muscat", "OM" },
+                    { "Asia/Nicosia", "CY" },
+                    { "Asia/Novokuznetsk", "RU" },
+                    { "Asia/Novosibirsk", "RU" },
+                    { "Asia/Omsk", "RU" },
+                    { "Asia/Oral", "KZ" },
+                    { "Asia/Phnom_Penh", "KH" },
+                    { "Asia/Pontianak", "ID" },
+                    { "Asia/Pyongyang", "KP" },
+                    { "Asia/Qatar", "QA" },
+                    { "Asia/Qostanay", "KZ" },
+                    { "Asia/Qyzylorda", "KZ" },
+                    { "Asia/Riyadh", "SA" },
+                    { "Asia/Sakhalin", "RU" },
+                    { "Asia/Samarkand", "UZ" },
+                    { "Asia/Seoul", "KR" },
+                    { "Asia/Shanghai", "CN" },
+                    { "Asia/Singapore", "SG" },
+                    { "Asia/Srednekolymsk", "RU" },
+                    { "Asia/Taipei", "TW" },
+                    { "Asia/Tashkent", "UZ" },
+                    { "Asia/Tbilisi", "GE" },
+                    { "Asia/Tehran", "IR" },
+                    { "Asia/Thimphu", "BT" },
+                    { "Asia/Tokyo", "JP" },
+                    { "Asia/Tomsk", "RU" },
+                    { "Asia/Ulaanbaatar", "MN" },
+                    { "Asia/Urumqi", "CN" },
+                    { "Asia/Ust-Nera", "RU" },
+                    { "Asia/Vientiane", "LA" },
+                    { "Asia/Vladivostok", "RU" },
+                    { "Asia/Yakutsk", "RU" },
+                    { "Asia/Yekaterinburg", "RU" },
+                    { "Asia/Yerevan", "AM" },
+                    { "Atlantic/Azores", "PT" },
+                    { "Atlantic/Bermuda", "BM" },
+                    { "Atlantic/Canary", "ES" },
+                    { "Atlantic/Cape_Verde", "CV" },
+                    { "Atlantic/Madeira", "PT" },
+                    { "Atlantic/Reykjavik", "IS" },
+                    { "Atlantic/South_Georgia", "GS" },
+                    { "Atlantic/St_Helena", "TA" },
+                    { "Atlantic/Stanley", "FK" },
+                    { "Australia/Adelaide", "AU" },
+                    { "Australia/Brisbane", "AU" },
+                    { "Australia/Broken_Hill", "AU" },
+                    { "Australia/Darwin", "AU" },
+                    { "Australia/Eucla", "AU" },
+                    { "Australia/Hobart", "AU" },
+                    { "Australia/Lindeman", "AU" },
+                    { "Australia/Lord_Howe", "AU" },
+                    { "Australia/Melbourne", "AU" },
+                    { "Australia/Perth", "AU" },
+                    { "Australia/Sydney", "AU" },
+                    { "Europe/Amsterdam", "NL" },
+                    { "Europe/Andorra", "AD" },
+                    { "Europe/Astrakhan", "RU" },
+                    { "Europe/Athens", "GR" },
+                    { "Europe/Belgrade", "RS" },
+                    { "Europe/Berlin", "DE" },
+                    { "Europe/Bratislava", "SK" },
+                    { "Europe/Brussels", "BE" },
+                    { "Europe/Bucharest", "RO" },
+                    { "Europe/Budapest", "HU" },
+                    { "Europe/Busingen", "DE" },
+                    { "Europe/Chisinau", "MD" },
+                    { "Europe/Copenhagen", "DK" },
+                    { "Europe/Dublin", "IE" },
+                    { "Europe/Gibraltar", "GI" },
+                    { "Europe/Guernsey", "GG" },
+                    { "Europe/Helsinki", "FI" },
+                    { "Europe/Isle_of_Man", "IM" },
+                    { "Europe/Istanbul", "TR" },
+                    { "Europe/Jersey", "JE" },
+                    { "Europe/Kaliningrad", "RU" },
+                    { "Europe/Kirov", "RU" },
+                    { "Europe/Lisbon", "PT" },
+                    { "Europe/Ljubljana", "SI" },
+                    { "Europe/London", "GB" },
+                    { "Europe/Luxembourg", "LU" },
+                    { "Europe/Madrid", "ES" },
+                    { "Europe/Malta", "MT" },
+                    { "Europe/Mariehamn", "AX" },
+                    { "Europe/Minsk", "BY" },
+                    { "Europe/Monaco", "MC" },
+                    { "Europe/Moscow", "RU" },
+                    { "Europe/Oslo", "NO" },
+                    { "Europe/Paris", "FR" },
+                    { "Europe/Podgorica", "ME" },
+                    { "Europe/Prague", "CZ" },
+                    { "Europe/Riga", "LV" },
+                    { "Europe/Rome", "IT" },
+                    { "Europe/Samara", "RU" },
+                    { "Europe/San_Marino", "SM" },
+                    { "Europe/Sarajevo", "BA" },
+                    { "Europe/Saratov", "RU" },
+                    { "Europe/Simferopol", "UA" },
+                    { "Europe/Skopje", "MK" },
+                    { "Europe/Sofia", "BG" },
+                    { "Europe/Stockholm", "SE" },
+                    { "Europe/Tallinn", "EE" },
+                    { "Europe/Tirane", "AL" },
+                    { "Europe/Ulyanovsk", "RU" },
+                    { "Europe/Vaduz", "LI" },
+                    { "Europe/Vatican", "VA" },
+                    { "Europe/Vienna", "AT" },
+                    { "Europe/Vilnius", "LT" },
+                    { "Europe/Volgograd", "RU" },
+                    { "Europe/Warsaw", "PL" },
+                    { "Europe/Zagreb", "HR" },
+                    { "Europe/Zurich", "CH" },
+                    { "Indian/Antananarivo", "MG" },
+                    { "Indian/Chagos", "DG" },
+                    { "Indian/Christmas", "CX" },
+                    { "Indian/Cocos", "CC" },
+                    { "Indian/Comoro", "KM" },
+                    { "Indian/Kerguelen", "TF" },
+                    { "Indian/Mahe", "SC" },
+                    { "Indian/Maldives", "MV" },
+                    { "Indian/Mauritius", "MU" },
+                    { "Indian/Mayotte", "YT" },
+                    { "Indian/Reunion", "RE" },
+                    { "Pacific/Apia", "WS" },
+                    { "Pacific/Auckland", "NZ" },
+                    { "Pacific/Bougainville", "PG" },
+                    { "Pacific/Chatham", "NZ" },
+                    { "Pacific/Easter", "CL" },
+                    { "Pacific/Efate", "VU" },
+                    { "Pacific/Fakaofo", "TK" },
+                    { "Pacific/Fiji", "FJ" },
+                    { "Pacific/Funafuti", "TV" },
+                    { "Pacific/Galapagos", "EC" },
+                    { "Pacific/Gambier", "PF" },
+                    { "Pacific/Guadalcanal", "SB" },
+                    { "Pacific/Guam", "GU" },
+                    { "Pacific/Honolulu", "US" },
+                    { "Pacific/Kiritimati", "KI" },
+                    { "Pacific/Kosrae", "FM" },
+                    { "Pacific/Kwajalein", "MH" },
+                    { "Pacific/Majuro", "MH" },
+                    { "Pacific/Marquesas", "PF" },
+                    { "Pacific/Midway", "UM" },
+                    { "Pacific/Nauru", "NR" },
+                    { "Pacific/Niue", "NU" },
+                    { "Pacific/Norfolk", "NF" },
+                    { "Pacific/Noumea", "NC" },
+                    { "Pacific/Pago_Pago", "AS" },
+                    { "Pacific/Palau", "PW" },
+                    { "Pacific/Pitcairn", "PN" },
+                    { "Pacific/Port_Moresby", "PG" },
+                    { "Pacific/Rarotonga", "CK" },
+                    { "Pacific/Saipan", "MP" },
+                    { "Pacific/Tahiti", "PF" },
+                    { "Pacific/Tarawa", "KI" },
+                    { "Pacific/Tongatapu", "TO" },
+                    { "Pacific/Wake", "UM" },
+                    { "Pacific/Wallis", "WF" }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeZoneData_TimeStart",
+                table: "TimeZoneData",
+                column: "TimeStart");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeZoneData_ZoneName",
+                table: "TimeZoneData",
+                column: "ZoneName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeZones_CountryId",
+                table: "TimeZones",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_UserId",
+                table: "UserRoles",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_CurrencyId",
+                table: "Users",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_LanguageId",
+                table: "Users",
+                column: "LanguageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_TimeZoneId",
+                table: "Users",
+                column: "TimeZoneId");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "TimeZoneData");
+
+            migrationBuilder.DropTable(
+                name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Currencies");
+
+            migrationBuilder.DropTable(
+                name: "Languages");
+
+            migrationBuilder.DropTable(
+                name: "TimeZones");
+
+            migrationBuilder.DropTable(
+                name: "Countries");
+        }
+    }
+}

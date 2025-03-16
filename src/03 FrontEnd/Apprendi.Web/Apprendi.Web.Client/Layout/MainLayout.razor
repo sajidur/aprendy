@@ -1,0 +1,115 @@
+﻿@inherits LayoutComponentBase
+@using Radzen.Blazor.Rendering;
+@using Apprendi.Application.Features.ReferenceData;
+
+<div>
+    @if (!_hasRendered)
+    {
+        <div class="overlay">
+            <div class="overlay-content">
+                <h1>Loading</h1>
+                <p>Please wait...</p>
+            </div>
+        </div>
+    }
+
+    <LocalTimeZoneComponent @rendermode="InteractiveAuto" />
+    <RadzenComponents @rendermode="InteractiveAuto" />
+
+    <CascadingValue Value=@CurrentUser>
+        <CascadingValue Value=@SelectedLanguage>
+            <CascadingValue Value=@SelectedCurrency>
+                <RadzenLayout>
+                    <RadzenHeader class="align-content-center">
+                        <ChildContent>
+                            <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start">
+                                <RadzenColumn Size="5">
+                                    <RadzenStack Orientation="Orientation.Horizontal">
+                                        <RadzenText Text="apprendy" TextStyle="TextStyle.DisplayH5" class="ms-3 header-item" />
+                                    </RadzenStack>
+                                </RadzenColumn>
+                                <RadzenColumn Size="7">
+
+                                    <RadzenStack class="pe-3" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End">
+                                        <RadzenAppearanceToggle DarkTheme="material-aprendy-dark" LightTheme="material-aprendy" class="header-item" />
+
+                                        <RadzenButton @ref=@_languageCurrencyButton
+                                                      Text="Language/Currency" Variant="Variant.Text"
+                                                      class="header-item"
+                                                      Click=@OnLanguageCurrencyClick>
+                                            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.End" Gap="0.5em">
+                                                @if (_isInitialized)
+                                                {
+                                                    <span class="header-item">@SelectedLanguage.Name, @SelectedCurrency?.Code </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="header-item">English, USD</span>
+                                                }
+                                                <RadzenIcon class="header-item" Icon="keyboard_arrow_down" />
+                                            </RadzenStack>
+                                        </RadzenButton>
+
+                                        <AuthorizeView>
+                                            <Authorized>
+                                                <RadzenButton class="header-item" Icon="chat" Variant="Variant.Text" />
+                                                <RadzenButton class="header-item" Icon="notifications" Variant="Variant.Text" />
+
+                                                <RadzenButton @ref=@_profileMenuButton Click=@OnProfileMenuClick
+                                                              class="header-item" Icon="person" Variant="Variant.Text" />
+                                            </Authorized>
+                                            <NotAuthorized>
+                                                <RadzenButton class="header-item" Icon="account_circle" Text="Login" Variant="Variant.Text" Click=@OnLoginClick />
+                                            </NotAuthorized>
+                                        </AuthorizeView>
+
+                                    </RadzenStack>
+                                </RadzenColumn>
+                            </RadzenRow>
+                        </ChildContent>
+                    </RadzenHeader>
+                    <RadzenBody class="m-0 rz-p-0">
+                        @Body
+                    </RadzenBody>
+                </RadzenLayout>
+            </CascadingValue>
+        </CascadingValue>
+    </CascadingValue>
+
+    <Popup @ref=@_popupLanguageCurrency Lazy=true class="language-currency-popup">
+        <RadzenStack Orientation="Orientation.Vertical" class="rz-h-100 rz-p-4" Gap="0.2em">
+            <RadzenLabel Text="Language" Component="DropDownLanguage" />
+            <RadzenDropDown TValue="LanguageDto" Data=@_languages @bind-Value=@SelectedLanguage TextProperty="Name"
+                            Name="DropDownLanguage" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" />
+            <RadzenLabel Text="Currency" Component="DropDownCurrency" class="mt-2" />
+            <RadzenDropDown TValue="CurrencyDto" Data=@_currencies @bind-Value=@SelectedCurrency TextProperty="Code"
+                            Name="DropDownCurrency" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+
+            </RadzenDropDown>
+        </RadzenStack>
+    </Popup>
+
+    <AuthorizeView>
+        <Popup @ref=@_popupProfileMenu Lazy=true class="language-currency-popup">
+            <RadzenPanelMenu class="header-profile-menu">                
+                <RadzenPanelMenuItem Text="Home" Path="" Icon="home" />
+                <RadzenPanelMenuItem Text="Messages" Path="" Icon="chat" />
+                <RadzenPanelMenuItem Text="My Lessons" Path="" Icon="school" />
+                <RadzenPanelMenuItem Text="Saved Tutors" Path="" Icon="favorite" />
+                <RadzenPanelMenuItem Text="Refer a Friend" Path="" Icon="group_add" /> 
+                <RadzenPanelMenuItem Text="Settings" Icon="settings" Click=@OnSettingsClick />
+                <RadzenPanelMenuItem Text="Help" Path="" Icon="help" />
+                <RadzenPanelMenuItem Text="Logout" Icon="exit_to_app" Click=@OnLogoutClick /> 
+            </RadzenPanelMenu>
+        </Popup>
+    </AuthorizeView>
+</div>
+
+
+
+@* 
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div> *@

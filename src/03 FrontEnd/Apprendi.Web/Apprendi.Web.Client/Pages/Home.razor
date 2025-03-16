@@ -1,0 +1,42 @@
+﻿@page "/"
+@using Apprendi.Application.Features.Users
+@using Apprendi.Application.Features.Users.Commands.UpdateUser
+@using Apprendi.Web.Client.Components
+
+<PageTitle>Home</PageTitle>
+
+<div class="container" style="display:none">
+    <h3 class="m-3">Example Form Validation</h3>
+
+    <EditForm Model="@_updateUserCommand" OnValidSubmit="HandleValidSubmit">
+        <FluentValidator />
+
+        <div class="m-3">
+            <label for="name">Name:</label>
+            <InputText id="name" @bind-Value="_updateUserCommand.User.FirstName" class="form-control" />
+            <ValidationMessage For="@(() => _updateUserCommand.User.FirstName)" />
+        </div>
+
+        <div class="m-3">
+            <label for="age">Age:</label>
+            <InputText id="age" @bind-Value="_updateUserCommand.User.LastName" class="form-control" />
+            <ValidationMessage For="@(() => _updateUserCommand.User.LastName)" />
+        </div>
+
+        <div class="m-3">
+            <label for="email">Email:</label>
+            <InputText id="email" @bind-Value="_updateUserCommand.User.Email" class="form-control" />
+            <ValidationMessage For="@(() => _updateUserCommand.User.Email)" />
+        </div>
+
+        
+
+        <button class="btn btn-primary m-3" @onclick="OnClick">Submit</button>
+    </EditForm>
+
+    @if (isSubmitted)
+    {
+        <p class="text-success">Form submitted successfully!</p>
+    }
+</div>
+

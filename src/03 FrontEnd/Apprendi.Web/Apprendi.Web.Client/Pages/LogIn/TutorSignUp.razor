@@ -1,0 +1,54 @@
+﻿@using Apprendi.Application.Features.ReferenceData
+@using Radzen
+@using Radzen.Blazor
+@attribute [AllowAnonymous]
+
+@page "/tutor-signup"
+
+<div class="main-container">
+    <RadzenCard class="card-container">
+        <EditForm Model="@_signUpAsTutorCommand">
+            <FluentValidator />
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenStack Orientation="Orientation.Horizontal">
+                        <RadzenText Text="Sign up as a tutor" TextStyle="TextStyle.DisplayH4" />
+                        <RadzenProgressBarCircular Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Small" Visible=@_isBusy />
+                    </RadzenStack>
+                    
+
+                    <RadzenStack Orientation="Orientation.Horizontal">
+                        <RadzenLabel Text="Already have an account?" />
+                        <RadzenLink Path="/login" class=@IsBusyClass>Log in</RadzenLink>
+                    </RadzenStack>
+
+                    <RadzenButton class="rz-w-100 rz-mt-3" Disabled="true">
+                        <RadzenImage class="social-media-icon" src="/images/google.png" />
+                        Continue with Google
+                    </RadzenButton>
+                    <RadzenButton class="rz-w-100 rz-mt-3" Disabled="true">
+                        <RadzenImage class="social-media-icon" src="/images/facebook.png" />
+                        Continue with Facebook
+                    </RadzenButton>
+                    <RadzenButton class="rz-w-100 rz-mt-3" Disabled="true">
+                        <RadzenImage class="social-media-icon" src="/images/apple.png" />
+                        Continue with Apple
+                    </RadzenButton>
+
+                    <div class="divider"><span>or</span></div>
+
+                    <RadzenLabel class="rz-w-100" Text="Email"></RadzenLabel>
+                    <RadzenTextBox class="rz-w-100" @bind-Value="_signUpAsTutorCommand.Email" type="email" placeholder="Your email" Disabled="_isBusy" />
+                    <ValidationMessage For="@(() => _signUpAsTutorCommand.Email)" />
+
+                    <RadzenLabel class="rz-w-100 rz-mt-4" Text="Password"></RadzenLabel>
+                    <RadzenPassword class="rz-w-100" @bind-Value="_signUpAsTutorCommand.Password" placeholder="Your password" Disabled="_isBusy" />
+                    <ValidationMessage For="@(() => _signUpAsTutorCommand.Password)" />
+
+                    <RadzenButton class="rz-w-100 rz-mt-4" Text="Sign Up" Click="OnSignUpClick" Disabled="_isBusy" />
+
+                </RadzenColumn>
+            </RadzenRow>
+        </EditForm>
+    </RadzenCard>
+</div>
